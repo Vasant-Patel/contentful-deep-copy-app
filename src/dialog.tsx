@@ -5,13 +5,8 @@ import axios from 'axios';
 import {
   Button,
   FormLabel,
-  HelpText,
-  Option,
-  SelectField,
   Spinner,
-  Table,
-  TableRow,
-  TextField,
+  ValidationMessage,
 } from '@contentful/forma-36-react-components';
 
 interface State {
@@ -19,7 +14,6 @@ interface State {
 }
 
 export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
-  const [targetEnv, setTargetEnv] = useState<string | undefined>();
   const [entryId, setEntryId] = useState<string | undefined>();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
@@ -39,14 +33,6 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
     sdk.window.updateHeight();
     onInit()
   }, []);
-
-  useEffect(() => {
-    console.log('Error : ', error);
-    if (error) {
-      sdk.notifier.error(error);
-    }
-  }, [error]);
-
 
   const onOpenItem = () => {
     console.log("Opening link ...")
@@ -102,9 +88,16 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
     return (
     <div style={{ margin: 50 }}>
       <div>
-        Making copy, please wait <Spinner />
+        Making copy, please wait  <Spinner />
       </div>
     </div>
+    )
+  }
+
+  if (error) {
+    const err = `Failed to make duplicate copy: ${error}`
+    return (
+      <ValidationMessage>{err}</ValidationMessage>
     )
   }
 
@@ -114,7 +107,7 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
       <Button
         buttonType="positive"
         isFullWidth={true}
-        disabled={isLoading || !targetEnv || !username || !password}
+        disabled={isLoading || !username || !password}
         onClick={onOpenItem}
         loading={isLoading}>
         Open item
