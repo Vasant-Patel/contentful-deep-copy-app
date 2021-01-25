@@ -17,7 +17,6 @@ export default function Config({ sdk }: { sdk: AppExtensionSDK }) {
     };
   };
 
-
   const onDeepCopyUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedValue = e.target.value;
     setDeepCopyUrl(updatedValue);
@@ -35,7 +34,7 @@ export default function Config({ sdk }: { sdk: AppExtensionSDK }) {
 
   useEffect(() => {
     sdk.app.onConfigure(configure);
-  }, [deepCopyUrl]);
+  }, [deepCopyUrl, username, password]);
 
   useEffect(() => {
     // Ready to display our app (end loading state).
