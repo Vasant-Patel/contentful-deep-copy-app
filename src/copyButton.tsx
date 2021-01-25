@@ -47,6 +47,7 @@ export default function CopyButton({ sdk }: { sdk: BaseExtensionSDK }) {
       <Button buttonType="positive" isFullWidth={true} onClick={onCopyPress} loading={isLoading}>
         Duplicate
       </Button>
+      <div style={{ margin: 8 }} />
       <HelpText>
         Duplicates all childrens of this entry to avoid any unwanted side effects with linked
         entries

@@ -29,10 +29,19 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
       'entryId',
       sdk.parameters.invocation || {}
     ) as unknown) as string;
+    console.log("Invoking copy for entryId:", entryId)
     setEntryId(entryId);
     sdk.window.updateHeight();
-    onInit()
   }, []);
+
+
+  useEffect(() => {
+    if (!entryId) {
+      return;
+    }
+    console.log("Invoking copy for entryId:", entryId)
+    onInit()
+  }, [entryId]);
 
   const onOpenItem = () => {
     console.log("Opening link ...")
@@ -87,9 +96,7 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
   if (isLoading) {
     return (
     <div style={{ margin: 50 }}>
-      <div>
         Making copy, please wait  <Spinner />
-      </div>
     </div>
     )
   }
@@ -97,7 +104,9 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
   if (error) {
     const err = `Failed to make duplicate copy: ${error}`
     return (
-      <ValidationMessage>{err}</ValidationMessage>
+      <div style={{ margin: 50 }}>
+        <ValidationMessage>{err}</ValidationMessage>
+      </div>
     )
   }
 
