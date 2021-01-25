@@ -27,7 +27,7 @@ export default function CopyButton({ sdk }: { sdk: BaseExtensionSDK }) {
 
 
 
-  const initiateEnvSelection = async () => {
+  const initiateDeepCopy = async () => {
     const response = await sdk.dialogs.openCurrentApp({
       title: 'Copying item',
       parameters: { entryId }
@@ -39,7 +39,7 @@ export default function CopyButton({ sdk }: { sdk: BaseExtensionSDK }) {
   const onCopyPress = async () => {
     try {
       setLoading(true);
-      initiateEnvSelection();
+      initiateDeepCopy();
     } catch (e) {
       setError(e.toString());
     } finally {

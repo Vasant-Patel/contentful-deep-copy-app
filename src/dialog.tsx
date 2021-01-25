@@ -4,6 +4,7 @@ import * as R from 'ramda';
 import axios from 'axios';
 import {
   Button,
+  FormLabel,
   HelpText,
   Option,
   SelectField,
@@ -25,49 +26,7 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
   const [username, setUsername] = useState<string>('');
   const [password, setPassowrd] = useState<string>('');
 
-  // backend api's ---------
-  // const loadEnvironments = () => {
-  //   const endpointUrl = (R.propOr(
-  //     null,
-  //     'deepCopyUrl',
-  //     sdk.parameters.installation
-  //   ) as unknown) as string;
-
-  //   if (!endpointUrl) {
-  //     throw 'Please set valid endpoint url from Manage Apps => Configure';
-  //   }
-
-  //   setLoading(true);
-  //   axios
-  //     .get(endpointUrl, {
-  //       params: {
-  //         entryId: entryId,
-  //         sourceEnv: sdk.ids.environment,
-  //       },
-  //     })
-  //     .then((r) => r.data as string[])
-  //     .then((r) => setEnvironments(r))
-  //     .catch((e) => setError(e.messsage || e))
-  //     .finally(() => {
-  //       setLoading(false);
-  //     });
-  // };
-
   console.log('SDK in dialog => ', sdk);
-  const onSelectionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('Env selected =>', e.target.value);
-    setTargetEnv(e.target.value);
-  };
-
-  const onUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const updatedValue = e.target.value;
-    setUsername(updatedValue);
-  };
-
-  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const updatedValue = e.target.value;
-    setPassowrd(updatedValue);
-  };
 
   useEffect(() => {
     // Ready to display our app (end loading state).
@@ -78,6 +37,7 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
     ) as unknown) as string;
     setEntryId(entryId);
     sdk.window.updateHeight();
+    onInit()
   }, []);
 
   useEffect(() => {
@@ -87,18 +47,36 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
     }
   }, [error]);
 
-  const onCopyPress = () => {
+
+  const onOpenItem = () => {
+    console.log("Opening link ...")
+  }
+
+  const onInit = () => {
+    setLoading(true);
+
     const endpointUrl = (R.propOr(
       null,
       'deepCopyUrl',
       sdk.parameters.installation
     ) as unknown) as string;
 
+    const username = (R.propOr(
+      null,
+      'username',
+      sdk.parameters.installation
+    ) as unknown) as string;
+
+    const password = (R.propOr(
+      null,
+      'password',
+      sdk.parameters.installation
+    ) as unknown) as string;
+
     if (!endpointUrl) {
-      throw 'Please set valid endpoint url from Manage Apps => Configure';
+      throw 'Please set valid config from Manage Apps => Configure';
     }
 
-    setLoading(true);
     axios
       .get(endpointUrl, {
         params: {
@@ -120,21 +98,26 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
       });
   };
 
-  if (isLoading)
-
-  return (
+  if (isLoading) {
+    return (
     <div style={{ margin: 50 }}>
       <div>
         Making copy, please wait <Spinner />
       </div>
-      <div style={{ margin: 10 }} />
+    </div>
+    )
+  }
+
+  return (
+    <div style={{ margin: 50 }}>
+      <FormLabel htmlFor='label'>Copy created successfully!</FormLabel>
       <Button
-        buttonType="negative"
+        buttonType="positive"
         isFullWidth={true}
         disabled={isLoading || !targetEnv || !username || !password}
-        onClick={onCopyPress}
+        onClick={onOpenItem}
         loading={isLoading}>
-        {targetEnv ? `Copy entry to ${targetEnv} env` : 'Copy entry'}
+        Open item
       </Button>
       <div style={{ margin: 50 }} />
     </div>
