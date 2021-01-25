@@ -25,12 +25,12 @@ export default function Config({ sdk }: { sdk: AppExtensionSDK }) {
 
   const onUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedValue = e.target.value;
-    setDeepCopyUrl(updatedValue);
+    setUsername(updatedValue);
   };
 
   const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedValue = e.target.value;
-    setDeepCopyUrl(updatedValue);
+    setPassword(updatedValue);
   };
 
   useEffect(() => {
