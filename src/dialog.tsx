@@ -15,6 +15,7 @@ interface State {
 
 export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
   const [entryId, setEntryId] = useState<string | undefined>();
+  const [newEntryId, setNewEntryId ] =  useState<string | undefined>();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
   const [username, setUsername] = useState<string>('');
@@ -45,6 +46,7 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
 
   const onOpenItem = () => {
     console.log("Opening link ...")
+    window.open(`https://app.contentful.com/spaces/${sdk.ids.space}/entries/${newEntryId}`, '_blank');
   }
 
   const onInit = () => {
@@ -84,7 +86,10 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
         },
       })
       .then((r) => r.data)
-      .then((r) => sdk.notifier.success(`Entry copied successfully ${r}`))
+      .then((r) => {
+        console.log("Response => ", r)
+        setNewEntryId(r.entryId)
+      })
       .catch((e) => {
         setError(e.response?.message || e.message || e);
       })
@@ -116,7 +121,7 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
       <Button
         buttonType="positive"
         isFullWidth={true}
-        disabled={isLoading || !username || !password}
+        disabled={!newEntryId}
         onClick={onOpenItem}
         loading={isLoading}>
         Open item
