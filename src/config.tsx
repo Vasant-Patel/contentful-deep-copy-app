@@ -60,8 +60,8 @@ export default function Config({ sdk }: { sdk: AppExtensionSDK }) {
         labelText="Endpoint url for deep copy"></TextField>
       <div style={{ margin: 30 }} />
       <TextField
-        name="urlInput"
-        id="urlInput"
+        name="username"
+        id="username"
         value={username}
         onChange={onUsernameChange}
         labelText="Username for cloud function access"></TextField>
