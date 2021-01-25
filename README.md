@@ -1,6 +1,6 @@
-# `Contentful Copy Content App`
+# `Contentful Deep Copy Content App`
 
-App for copying contentful entries
+App for deep copying contentful entries
 
 
 ## How to use
