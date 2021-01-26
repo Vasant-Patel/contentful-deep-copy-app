@@ -14,6 +14,22 @@ export default function Config({ sdk }: { sdk: AppExtensionSDK }) {
     return {
       // Parameters to be persisted as the app configuration.
       parameters: { deepCopyUrl, username, password },
+      targetState: {
+        EditorInterface: {
+          'card': { sidebar: { position: 1 }},
+          'marketingColor': { sidebar: { position: 1 }},
+          'marketing': { sidebar: { position: 1 }},
+          'marketingMarkdown': { sidebar: { position: 1 }},
+          'marketingMessage': { sidebar: { position: 1 }},
+          'marketingPreview': { sidebar: { position: 1 }},
+          'marketingPriceList': { sidebar: { position: 1 }},
+          'marketingPriceListItem': { sidebar: { position: 1 }},
+          'productInfo': { sidebar: { position: 1 }},
+          'productInfoCard': { sidebar: { position: 1 }},
+          'productInfoHeader': { sidebar: { position: 1 }},
+          'marketingText': { sidebar: { position: 1 }},
+        }
+      },
     };
   };
 
