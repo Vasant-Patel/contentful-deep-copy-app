@@ -49,8 +49,7 @@ export default function CopyButton({ sdk }: { sdk: BaseExtensionSDK }) {
       </Button>
       <div style={{ margin: 8 }} />
       <HelpText>
-        Duplicates all childrens of this entry to avoid any unwanted side effects with linked
-        entries
+        Makes copy the right way! Makes duplicates of all linked entries to avoid any unwanted side effects.
       </HelpText>
     </div>
   );

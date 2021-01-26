@@ -5,6 +5,8 @@ import axios from 'axios';
 import {
   Button,
   FormLabel,
+  Heading,
+  Icon,
   Spinner,
   ValidationMessage,
 } from '@contentful/forma-36-react-components';
@@ -15,7 +17,7 @@ interface State {
 
 export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
   const [entryId, setEntryId] = useState<string | undefined>();
-  const [newEntryId, setNewEntryId ] =  useState<string | undefined>();
+  const [newEntryId, setNewEntryId] = useState<string | undefined>();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
   const [username, setUsername] = useState<string>('');
@@ -30,24 +32,26 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
       'entryId',
       sdk.parameters.invocation || {}
     ) as unknown) as string;
-    console.log("Invoking copy for entryId:", entryId)
+    console.log('Invoking copy for entryId:', entryId);
     setEntryId(entryId);
     sdk.window.updateHeight();
   }, []);
-
 
   useEffect(() => {
     if (!entryId) {
       return;
     }
-    console.log("Invoking copy for entryId:", entryId)
-    onInit()
+    console.log('Invoking copy for entryId:', entryId);
+    onInit();
   }, [entryId]);
 
   const onOpenItem = () => {
-    console.log("Opening link ...")
-    window.open(`https://app.contentful.com/spaces/${sdk.ids.space}/entries/${newEntryId}`, '_blank');
-  }
+    console.log('Opening link ...');
+    window.open(
+      `https://app.contentful.com/spaces/${sdk.ids.space}/entries/${newEntryId}`,
+      '_blank'
+    );
+  };
 
   const onInit = () => {
     setLoading(true);
@@ -58,17 +62,9 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
       sdk.parameters.installation
     ) as unknown) as string;
 
-    const username = (R.propOr(
-      null,
-      'username',
-      sdk.parameters.installation
-    ) as unknown) as string;
+    const username = (R.propOr(null, 'username', sdk.parameters.installation) as unknown) as string;
 
-    const password = (R.propOr(
-      null,
-      'password',
-      sdk.parameters.installation
-    ) as unknown) as string;
+    const password = (R.propOr(null, 'password', sdk.parameters.installation) as unknown) as string;
 
     if (!endpointUrl) {
       throw 'Please set valid config from Manage Apps => Configure';
@@ -87,8 +83,8 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
       })
       .then((r) => r.data)
       .then((r) => {
-        console.log("Response => ", r)
-        setNewEntryId(r.entryId)
+        console.log('Response => ', r);
+        setNewEntryId(r.entryId);
       })
       .catch((e) => {
         setError(e.response?.message || e.message || e);
@@ -100,24 +96,25 @@ export default function Dialog({ sdk }: { sdk: DialogExtensionSDK }) {
 
   if (isLoading) {
     return (
-    <div style={{ margin: 50 }}>
-        Making copy, please wait  <Spinner />
-    </div>
-    )
+      <div style={{ margin: 50 }}>
+        <Icon color="primary" size="large" icon="Edit" />{' '}
+        <Heading>Making copy, please wait</Heading> <Spinner />
+      </div>
+    );
   }
 
   if (error) {
-    const err = `Failed to make duplicate copy: ${error}`
+    const err = `Failed to make duplicate copy: ${error}`;
     return (
       <div style={{ margin: 50 }}>
         <ValidationMessage>{err}</ValidationMessage>
       </div>
-    )
+    );
   }
 
   return (
     <div style={{ margin: 50 }}>
-      <FormLabel htmlFor='label'>Copy created successfully!</FormLabel>
+      <FormLabel htmlFor="label">Copy created successfully!</FormLabel>
       <Button
         buttonType="positive"
         isFullWidth={true}
